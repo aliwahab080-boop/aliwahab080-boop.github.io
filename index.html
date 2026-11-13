@@ -1,0 +1,74 @@
+<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Salima V47 Pi SDK</title><script src="https://sdk.minepi.com/pi-sdk.js"></script><style>body{margin:0;background:#000;color:#fff;font-family:Arial;padding-bottom:80px}.h{background:#7ab800;padding:18px;text-align:center}.t{display:flex;gap:6px;padding:10px;overflow:auto}.t div{background:#222;padding:10px;border-radius:10px;white-space:nowrap}.t .a{background:#7ab800;color:#000;font-weight:bold}.c{background:#111;border:1px solid #222;border-radius:14px;padding:14px;margin:10px}select,input{width:100%;padding:12px;border-radius:10px;margin-top:6px;border:none}.b{width:100%;padding:14px;border-radius:10px;border:none;background:#7ab800;font-weight:900;margin-top:10px}.b2{background:#222;color:#fff}.n{position:fixed;bottom:0;left:0;right:0;background:#111;display:flex;justify-content:space-around;padding:10px;border-top:1px solid #222;text-align:center;font-size:12px}.it{border-bottom:1px solid #222;padding:8px 0}.it button,.it a{padding:6px 9px;border-radius:7px;border:none;font-weight:bold;margin:2px;text-decoration:none;display:inline-block}.g{background:#16a34a;color:#fff}.w{background:#25D366;color:#fff}.r{background:#ef4444;color:#fff}.v{background:#7ab800}#lock{position:fixed;inset:0;background:#000;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center}#recu{position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:9998;display:none;align-items:center;justify-content:center;padding:15px}#recu>div{background:#fff;color:#000;padding:18px;border-radius:14px;width:100%;max-width:380px}</style></head><body>
+<div id="lock"><h1 style="font-size:40px">🔒 SALIMA</h1><p>Ali Wahab - Mot de passe Salima</p><input id="pinInput" type="password" placeholder="Mot de passe" style="text-align:center;font-size:22px"><button class="b" onclick="deverrouiller()">DÉVERROUILLER 🔓</button><p id="pinMsg" style="color:#f87171"></p><p style="font-size:12px;color:#888">1ère fois : 1234</p></div>
+<div id="recu"><div><h2 style="text-align:center;margin:0">🧾 REÇU SALIMA</h2><p style="text-align:center;font-size:12px">Salima Transfert - Niamey<br>Ali Wahab - 99963777</p><hr><div id="recuTxt" style="font-size:14px;line-height:1.7"></div><hr><button class="b" onclick="window.print()">🖨️ IMPRIMER</button><button class="b" style="background:#2563eb;color:#fff" onclick="sauvegarderRecu()">💾 SAUVEGARDER</button><a id="recuWA" class="b w" style="text-align:center;display:block" href="#" target="_blank">📲 WHATSAPP</a><button class="b" style="background:#ef4444;color:#fff" onclick="envoyerSMSBenef()">📩 SMS BÉNÉFICIAIRE</button><button class="b b2" onclick="fermerRecu()">Fermer ❌</button></div></div>
+<div class="h"><b>SALIMA V47 - PI SDK RÉEL</b><h1 id="solde">250 000 FCFA</h1><span id="piStat">● Pi NON CONNECTÉ - Ouvre dans Pi Browser</span></div>
+<div class="t"><div class="a" onclick="sh('w',this)">🏠 Wallet</div><div onclick="sh('n',this)">💸 NITA AMANA</div><div onclick="sh('f',this)">💡 Factures</div><div onclick="sh('v',this)">🏘️ Villages</div><div onclick="sh('c',this)">📒 Contacts</div><div onclick="sh('p',this)">👤 Profil</div><div onclick="sh('h',this)">📜 Hist.</div></div>
+<div id="t-w"><div class="c"><h3>🟡 VRAI Pi - Avec SDK</h3><p id="piUser">Pas connecté</p><button class="b" style="background:#7d3cff;color:#fff" onclick="connectPi()">🟣 CONNECTER VRAI Pi</button><label>Montant Pi réel</label><input id="pm" type="number" value="0.1" step="0.01"><label>Vers Username Pi</label><input id="pd" placeholder="@autre"><button class="b" style="background:#7d3cff;color:#fff" onclick="payerVraiPi()">PAYER VRAI Pi AVEC SDK 🟡</button><p style="font-size:12px;color:#aaa">⚠️ Ça marche SEULEMENT dans Pi Browser.<br>Dans Chrome, ça va dire Erreur, c'est normal.<br>Testnet = Faux Pi pour tester. Mainnet = Vrai Pi.</p></div>
+<div class="c"><h3>💸 Envoyer FCFA</h3><label>Région</label><select id="reg" onchange="chV()"><option value="">-- Région --</option><option>Niamey</option><option>Tillabéri</option><option>Dosso</option><option>Tahoua</option><option>Maradi</option><option>Zinder</option><option>Agadez</option><option>Diffa</option></select><label>Village</label><select id="vil"><option value="">-- Village --</option></select><label>Destination</label><select id="dest"><option>Niger - XOF</option><option>Nigeria</option><option>Bénin</option><option>Ghana</option><option>France</option><option>USA</option></select><label>Montant</label><input id="mt" type="number" value="100000"><div id="calc" style="background:#222;padding:8px;border-radius:8px;margin-top:8px">Frais 1000 | Reçoit 99000</div><button class="b" onclick="env()">ENVOYER 💸</button></div>
+<div class="c"><h3>🏦 Coffre</h3><p>Coffre : <span id="cof">0</span> FCFA</p><button class="b b2" onclick="sh('co',null)">Voir Coffre</button></div></div>
+<div id="t-n" style="display:none"><div class="c"><h3>💸 NITA / AMANA</h3><select id="nType"><option>ENVOYER vers NITA</option><option>ENVOYER vers AMANA</option><option>RECEVOIR de NITA</option><option>RECEVOIR de AMANA</option></select><input id="nNom" placeholder="Nom bénéficiaire"><input id="nNum" placeholder="Numéro Ex: 90 00 00 00"><input id="nMt" type="number" value="50000"><button class="b" onclick="envNita()">ENVOYER / RECEVOIR ✅</button></div></div>
+<div id="t-f" style="display:none"><div class="c"><h3>💡 Factures</h3><select id="fServ"><option>AIRTEL - Recharge</option><option>MOOV - Recharge</option><option>ZAMANI - Recharge</option><option>NIGELEC - Électricité</option><option>SEEN - Eau</option><option>CANAL+ - Abonnement</option></select><input id="fNum" placeholder="Numéro / Compteur"><input id="fMt" type="number" value="5000"><button class="b" onclick="payerFacture()">PAYER 💡</button></div></div>
+<div id="t-v" style="display:none"><div class="c"><h3>🏘️ Villages</h3><input id="rv" placeholder="Cherche..." oninput="affV()"><div id="lv"></div></div></div>
+<div id="t-c" style="display:none"><div class="c"><h3>📒 Contacts</h3><input id="pn" placeholder="Prénom"><input id="nm" placeholder="Nom"><input id="num" placeholder="Numéro"><button class="b" onclick="addC()">Ajouter ✅</button><div id="lc"></div></div></div>
+<div id="t-p" style="display:none"><div class="c" style="text-align:center"><h2>Ali Wahab</h2><p>@aliwahab - 99963777</p><input id="newPin" type="password" placeholder="Nouveau mot de passe"><button class="b" onclick="changerPin()">Changer mot de passe 🔒</button></div></div>
+<div id="t-h" style="display:none"><div class="c"><h3>📜 Historique</h3><div id="lh"></div><h3>Commission : <span id="com">0</span></h3></div></div>
+<div id="t-co" style="display:none"><div class="c" style="text-align:center"><h3>🏦 Coffre</h3><h1 id="cof2">0 FCFA</h1></div></div>
+<div class="n"><div onclick="sh('w',null)">🏠<br>Accueil</div><div onclick="sh('n',null)">💸<br>NITA</div><div onclick="sh('f',null)">💡<br>Factures</div><div onclick="sh('co',null)">🏦<br>Coffre</div><div onclick="sh('p',null)">👤<br>Profil</div></div>
+<script>
+// ===== PI SDK - VRAI PI =====
+// sandbox:true = Testnet (Faux Pi pour tester)
+// sandbox:false = Mainnet (Vrai Pi) - à mettre quand Pi approuve Mainnet
+Pi.init({version:"2.0", sandbox:true});
+let piUser=null;
+async function connectPi(){
+ try{
+  const scopes=['username','payments'];
+  const auth=await Pi.authenticate(scopes, onIncompletePaymentFound);
+  piUser=auth.user;
+  document.getElementById('piUser').innerText='✅ Connecté Pi : @'+piUser.username;
+  document.getElementById('piStat').innerText='● Pi CONNECTÉ : @'+piUser.username+' - Testnet';
+  alert('✅ Pi Connecté ! Bonjour @'+piUser.username);
+ }catch(e){ alert('❌ Erreur Pi : Ouvre Salima dans Pi Browser, pas Chrome.\n'+e.message); }
+}
+function onIncompletePaymentFound(payment){ console.log('Paiement incomplet',payment); }
+async function payerVraiPi(){
+ if(!piUser){ alert('Connecte d’abord ton Pi ! Clique CONNECTER VRAI Pi'); return; }
+ let montant=parseFloat(document.getElementById('pm').value)||0;
+ let dest=document.getElementById('pd').value||'';
+ if(montant<=0) return alert('Mets montant Pi');
+ if(!confirm('Payer '+montant+' Pi réel à '+dest+' ? Pi va ouvrir la fenêtre de confirmation.')) return;
+ try{
+  const payment=await Pi.createPayment({amount:montant, memo:'Salima Transfert vers '+dest, metadata:{dest:dest, from:piUser.username}}, {
+   onReadyForServerApproval:(pid)=>{ console.log('Approval',pid); alert('✅ Pi a approuvé ! Payment ID: '+pid+'\nEn Testnet, pas besoin de serveur.'); },
+   onReadyForServerCompletion:(pid,txid)=>{ console.log('Complete',pid,txid); alert('✅ VRAI Pi PAYÉ ! TX: '+txid); addH('VRAI Pi '+montant+' -> '+dest, montant, dest); },
+   onCancel:(pid)=>{ alert('❌ Paiement Pi annulé'); },
+   onError:(err)=>{ alert('❌ Erreur Pi: '+err.message); }
+  });
+ }catch(e){ alert('❌ Erreur SDK: '+e.message); }
+}
+// ===== SALIMA NORMAL =====
+let dernierRecu='',dernierNum='',dernierMontant=0,dernierCode='';
+function getPin(){return localStorage.getItem('salima_pin')||'1234'}
+function deverrouiller(){if(document.getElementById('pinInput').value==getPin())document.getElementById('lock').style.display='none';else document.getElementById('pinMsg').innerText='❌ Faux !'}
+function demanderPinPourEnvoi(){let p=prompt('🔒 Confirme mot de passe pour envoyer :');if(p!==getPin()){alert('❌ Faux ! Envoi annulé.');return false}return true}
+function changerPin(){let n=document.getElementById('newPin').value;if(!n||n.length<4)return alert('4 chiffres min');localStorage.setItem('salima_pin',n);alert('✅ Mot de passe changé : '+n)}
+const V=[["Niamey - Plateau","Niamey"],["Niamey - Yantala","Niamey"],["Niamey - Goudel","Niamey"],["Niamey - Aéroport","Niamey"],["Téra","Tillabéri"],["Say","Tillabéri"],["Kollo","Tillabéri"],["Ouallam","Tillabéri"],["Dosso Ville","Dosso"],["Gaya","Dosso"],["Tahoua Ville","Tahoua"],["Konni","Tahoua"],["Maradi Ville","Maradi"],["Zinder Ville","Zinder"],["Agadez Ville","Agadez"],["Diffa Ville","Diffa"]];
+function gc(){return parseInt(localStorage.getItem('cf')||'0')}function upd(){document.getElementById('cof').innerText=gc();document.getElementById('cof2').innerText=gc()+' FCFA';document.getElementById('solde').innerText=(250000+gc())+' FCFA'}
+function gcm(){return parseInt(localStorage.getItem('cm')||'0')}
+function sh(id,el){['w','n','f','v','c','p','h','co'].forEach(t=>{let e=document.getElementById('t-'+t);if(e)e.style.display=(t==id?'block':'none')});document.querySelectorAll('.t div').forEach(d=>d.classList.remove('a'));if(el)el.classList.add('a');if(id=='h')showH();if(id=='c')affC();if(id=='v')affV()}
+function addH(s,m,d){let h=JSON.parse(localStorage.getItem('ht')||'[]');h.unshift({s,m,d,date:new Date().toLocaleString()});localStorage.setItem('ht',JSON.stringify(h));showH()}
+function showH(){let h=JSON.parse(localStorage.getItem('ht')||'[]');document.getElementById('lh').innerHTML=h.length?h.map(x=>`<div class="it"><b>${x.s}</b> - ${x.m}<br><small>${x.d} - ${x.date}</small></div>`).join(''):'Aucune';document.getElementById('com').innerText=gcm()+' FCFA'}
+function ouvrirRecu(details,num,montant){dernierRecu=details;dernierNum=num;dernierMontant=montant;dernierCode='SAL'+Math.floor(1000+Math.random()*9000);document.getElementById('recuTxt').innerHTML=details.replace(/\n/g,'<br>')+'<br><b>Code : '+dernierCode+'</b><br>Date : '+new Date().toLocaleString();let msg=encodeURIComponent('🧾 REÇU SALIMA\n'+details+'\nCode: '+dernierCode);document.getElementById('recuWA').href='https://wa.me/227'+num.replace(/[^0-9]/g,'').slice(-8)+'?text='+msg;document.getElementById('recu').style.display='flex'}
+function fermerRecu(){document.getElementById('recu').style.display='none'}
+function sauvegarderRecu(){let b=new Blob([dernierRecu+'\nCode: '+dernierCode],{type:'text/plain'});let a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='recu-salima.txt';a.click();alert('✅ Sauvegardé !')}
+function envoyerSMSBenef(){let msg=encodeURIComponent('Salima Transfert: Tu as reçu '+dernierMontant+' FCFA. Code: '+dernierCode+'. Ali Wahab 99963777');window.location.href='sms:+227'+dernierNum.replace(/[^0-9]/g,'').slice(-8)+'?body='+msg}
+function chV(){let r=document.getElementById('reg').value;let s=document.getElementById('vil');s.innerHTML='<option value="">-- Village --</option>'+V.filter(x=>x[1]==r).map(x=>`<option>${x[0]}</option>`).join('')}
+function affV(){let q=(document.getElementById('rv').value||'').toLowerCase();let l=V.filter(x=>x[0].toLowerCase().includes(q));document.getElementById('lv').innerHTML=l.map(x=>`<div class="it">🏘️ <b>${x[0]}</b> - ${x[1]}</div>`).join('')}
+document.getElementById('mt').addEventListener('input',function(){let m=parseInt(this.value)||0;let f=Math.round(m*0.01);document.getElementById('calc').innerText='Frais '+f+' | Reçoit '+(m-f)})
+function env(){if(!demanderPinPourEnvoi())return;let m=document.getElementById('mt').value;let v=document.getElementById('vil').value||'Niger';if(!m)return alert('Mets montant');let f=Math.round(m*0.01);localStorage.setItem('cm',gcm()+f);addH('Envoi '+v,m,v);ouvrirRecu('Service: Envoi\nVillage: '+v+'\nMontant: '+m+' FCFA\nFrais: '+f+'\nReçoit: '+(m-f)+' FCFA','90000000',m)}
+function envNita(){if(!demanderPinPourEnvoi())return;let t=document.getElementById('nType').value;let nom=document.getElementById('nNom').value||'Bénéficiaire';let num=document.getElementById('nNum').value;let m=parseInt(document.getElementById('nMt').value)||0;if(!num||!m)return alert('Nom + Numéro + Montant');let f=Math.round(m*0.01);localStorage.setItem('cm',gcm()+f);addH(t+' - '+nom,m,nom);ouvrirRecu('Service: '+t+'\nBénéficiaire: '+nom+'\nNuméro: '+num+'\nMontant: '+m+' FCFA\nFrais: '+f+'\nReçoit: '+(m-f)+' FCFA',num,m)}
+function payerFacture(){if(!demanderPinPourEnvoi())return;let s=document.getElementById('fServ').value;let num=document.getElementById('fNum').value;let m=parseInt(document.getElementById('fMt').value)||0;if(!num||!m)return alert('Numéro + Montant');let f=100;localStorage.setItem('cm',gcm()+f);addH('Facture '+s,m,num);ouvrirRecu('Service: '+s+'\nNuméro: '+num+'\nMontant: '+m+' FCFA\nFrais: '+f+'\nTotal: '+(m+f)+' FCFA',num,m)}
+function addC(){let p=document.getElementById('pn').value.trim();let num=document.getElementById('num').value.trim();if(!p||!num)return alert('Prénom + Numéro');let l=JSON.parse(localStorage.getItem('ct')||'[]');l.unshift({p,n:document.getElementById('nm').value,num});localStorage.setItem('ct',JSON.stringify(l));affC();alert('✅ Ajouté')}
+function affC(){let l=JSON.parse(localStorage.getItem('ct')||'[]');document.getElementById('lc').innerHTML=l.map(c=>`<div class="it"><b>${c.p} ${c.n}</b><br>${c.num}</div>`).join('')||'Aucun'}
+upd();showH();affC();affV();
+</script></body></html>
