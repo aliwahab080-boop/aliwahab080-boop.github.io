@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Salima - Transfert Pi</title>
+<script src="https://sdk.minepi.com/pi-sdk.js"></script>
+<style>
+*{box-sizing:border-box;font-family:Arial,sans-serif}
+body{margin:0;background:#f6f0ff;padding:16px}
+.card{background:white;border-radius:20px;padding:20px;max-width:420px;margin:0 auto;box-shadow:0 10px 30px rgba(0,0,0,.1)}
+.logo{text-align:center;font-size:32px;font-weight:900;color:#7c3aed}
+.sub{text-align:center;color:#666;font-size:13px;margin-bottom:16px}
+.btn{width:100%;padding:15px;border:none;border-radius:14px;font-size:16px;font-weight:700;cursor:pointer;margin-top:10px}
+.btn-pi{background:#7c3aed;color:white}
+.btn-green{background:#16a34a;color:white}
+input,select{width:100%;padding:14px;border:1px solid #ddd;border-radius:12px;margin-top:10px;font-size:16px}
+.info{background:#f3e8ff;padding:12px;border-radius:12px;margin-top:14px;font-size:14px}
+.hidden{display:none}
+.top{display:flex;justify-content:space-between;align-items:center}
+.balance{font-size:28px;font-weight:900;color:#111}
+</style>
+</head>
+<body>
+<div class="card">
+<div class="logo">💜 SALIMA</div>
+<div class="sub">Transfert rapide • Niger • Pi Network</div>
+
+<div id="loginBox">
+<button class="btn btn-pi" onclick="loginPi()">🟣 SE CONNECTER AVEC PI</button>
+<p style="text-align:center;font-size:13px;color:#666">Connecte-toi avec ton compte Pi pour utiliser Salima</p>
+</div>
+
+<div id="appBox" class="hidden">
+<div class="top">
+<div><div style="font-size:13px;color:#666">Bonjour,</div><b id="userName">Pionnier</b></div>
+<div style="text-align:right"><div style="font-size:12px;color:#666">Solde</div><div class="balance" id="solde">0.00 Pi</div></div>
+</div>
+
+<div class="info">✅ Connecté avec Pi<br><span id="userId" style="font-size:12px;color:#666"></span></div>
+
+<label style="font-size:13px;font-weight:700">Envoyer à</label>
+<input id="dest" placeholder="@pseudo Pi ou numéro">
+<label style="font-size:13px;font-weight:700">Montant en Pi</label>
+<input id="montant" type="number" placeholder="Ex: 1.5" value="1">
+<select id="pays">
+<option value="Niger">🇳🇪 Niger</option>
+<option value="Nigeria">🇳🇬 Nigeria</option>
+<option value="Benin">🇧🇯 Bénin</option>
+<option value="Togo">🇹🇬 Togo</option>
+</select>
+<button class="btn btn-green" onclick="envoyer()">💸 ENVOYER AVEC PI</button>
+<button
