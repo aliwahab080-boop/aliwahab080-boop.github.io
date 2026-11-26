@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Salima - Contacts</title><style>
+*{box-sizing:border-box;font-family:system-ui}body{margin:0;background:#f6f6f6;padding-bottom:90px}
+.header{background:#C6F135;padding:18px 16px 14px;border-radius:0 0 22px 22px}
+.header h1{margin:0;font-size:24px}.header p{margin:4px 0 0;color:#444}
+.card{background:#fff;margin:14px;border-radius:18px;padding:16px;box-shadow:0 2px 10px #0001}
+input,select{width:100%;padding:13px;border:1px solid #ddd;border-radius:12px;margin:6px 0;font-size:15px}
+button{width:100%;padding:14px;border:0;border-radius:12px;background:#111;color:#C6F135;font-weight:800;font-size:15px;margin-top:8px}
+.btn-green{background:#C6F135;color:#111}.contact{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #eee}
+.avatar{width:44px;height:44px;border-radius:50%;background:#C6F135;display:flex;align-items:center;justify-content:center;font-weight:900}
+.tabs{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;border-top:1px solid #eee}
+.tabs div{flex:1;text-align:center;padding:12px 0;font-size:13px;font-weight:700}.tabs .on{color:#111;border-top:3px solid #C6F135}
+.hide{display:none}
+</style></head><body>
+<div class="header"><h1>💚 Salima</h1><p>Admin: +227 80 44 44 44 • PIN 1234</p></div>
+
+<div id="page-envoi">
+<div class="card"><h3>💸 Envoyer de l'argent</h3>
+<p id="dest">Destinataire : <b>Aucun - choisis dans Contacts</b></p>
+<input id="nomDest" placeholder="Nom destinataire">
+<input id="numDest" placeholder="Numéro destinataire +227...">
+<input id="montant" type="number" placeholder="Montant FCFA">
+<select id="pays"><option>Niger</option><option>Nigeria</option><option>Bénin</option><option>Togo</option><option>Ghana</option><option>Côte d'Ivoire</option></select>
+<button onclick="envoyer()">Continuer - Calculer les frais</button><p id="result"></p></div>
+</div>
+
+<div id="page-contacts" class="hide">
+<div class="card"><h3>👥 Mes Contacts</h3>
+<input id="search" placeholder="🔍 Rechercher nom ou numéro..." oninput="afficher()">
+<button class="btn-green" onclick="importer()">📱 Importer depuis mon téléphone</button>
+<div id="liste"></div></div>
+<div class="card"><h3>➕ Ajouter Client</h3>
+<input id="cNom" placeholder="Nom complet">
+<input id="cNum" placeholder="Numéro +227...">
+<select id="cPays"><option>Niger</option><option>Nigeria</option><option>Bénin</option><option>Togo</option><option>Ghana</option><option>Côte d'Ivoire</option></select>
+<input id="cNote" placeholder="Note ex: client fidèle">
+<button onclick="ajouter()">Enregistrer Client</button></div>
+</div>
+
+<div class="tabs"><div id="t1" class="on" onclick="show('envoi')">💸 Envoyer</div><div id="t2" onclick="show('contacts')">👥 Contacts</div></div>
+<script>
+let contacts=JSON.parse(localStorage.getItem('salima_contacts')||'[]');
+function show(p){document.getElementById('page-envoi').classList.toggle('hide',p!=='envoi');document.getElementById('page-contacts').classList.toggle('hide',p!=='contacts');document.getElementById('t1').classList.toggle('on',p==='envoi');document.getElementById('t2').classList.toggle('on',p==='contacts');}
+function ajouter(){let n=document.getElementById('cNom').value,nm=document.getElementById('cNum').value,py=document.getElementById('cPays').value,nt=document.getElementById('cNote').value;if(!n||!nm){alert('Mets nom + numéro');return}contacts.push({nom:n,num:nm,pays:py,note:nt});localStorage.setItem('salima_contacts',JSON.stringify(contacts));document.getElementById('cNom').value='';document.getElementById('cNum').value='';afficher();alert('Client ajouté ✅');}
+function afficher(){let q=(document.getElementById('search').value||'').toLowerCase();let html='';contacts.filter(c=>(c.nom+c.num).toLowerCase().includes(q)).forEach((c,i)=>{html+=`<div class="contact"><div class="avatar">${c.nom[0].toUpperCase()}</div><div style="flex:1"><b>${c.nom}</b><br><small>${c.num} • ${c.pays}</small></div><button style="width:auto;padding:8px 12px" onclick="choisir(${i})">Utiliser →</button><button style="width:auto;padding:8px;background:#ff4444;color:#fff" onclick="supp(${i})">✕</button></div>`});document.getElementById('liste').innerHTML=html||'<p>Aucun contact. Ajoute ton premier client 👆</p>';}
+function choisir(i){let c=contacts[i];document.getElementById('nomDest').value=c.nom;document.getElementById('numDest').value=c.num;document.getElementById('pays').value=c.pays;document.getElementById('dest').innerHTML='Destinataire : <b>'+c.nom+' - '+c.num+'</b>';show('envoi');}
+function supp(i){if(confirm('Supprimer ?')){contacts.splice(i,1);localStorage.setItem('salima_contacts',JSON.stringify(contacts));afficher();}}
+function envoyer(){let m=+document.getElementById('montant').value;if(!m){alert('Mets montant');return}let frais=m*0.01;document.getElementById('result').innerHTML=`Frais: ${frais} FCFA<br>Total à recevoir: ${m-frais} FCFA<br><b>Entre PIN 1234 pour valider ✅</b>`;}
+async function importer(){try{let props=['name','tel'];let opts={multiple:true};let cs=await navigator.contacts.select(props,opts);cs.forEach(c=>{if(c.tel&&c.tel[0])contacts.push({nom:c.name[0]||'Sans nom',num:c.tel[0],pays:'Niger',note:'Importé téléphone'})});localStorage.setItem('salima_contacts',JSON.stringify(contacts));afficher();alert(cs.length+' contacts importés ✅')}catch(e){alert('Ton téléphone ne permet pas l\'import auto. Ajoute à la main, c\'est plus sûr.');}}
+afficher();
+</script></body></html>
